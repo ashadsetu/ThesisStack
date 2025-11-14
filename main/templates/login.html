@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login | ThesisStack{% endblock %}
+
+{% block content %}
+<section class="position-relative">
+  <div class="floating-shape shape1"></div>
+  <div class="floating-shape shape2"></div>
+  <div class="floating-shape shape3"></div>
+
+  <div class="row justify-content-center" data-aos="zoom-in">
+    <div class="col-md-5">
+      <div class="card border-0 shadow-lg rounded-4 glass-card">
+        <div class="card-body p-4 text-center">
+          <h3 class="fw-bold text-primary mb-3 animate-title">Login to Your Account</h3>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+
+          <form method="POST" class="text-start">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" name="username" class="form-control form-control-lg" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Login as</label>
+              <select name="role" class="form-select form-select-lg" required>
+                <option value="">Select Role</option>
+                <option value="student">Student</option>
+                <option value="supervisor">Faculty / Supervisor</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn uap-btn btn-lg glow-btn">Login</button>
+            </div>
+          </form>
+
+          <p class="mt-4 mb-0">
+            Don’t have an account?
+            <a href="{% url 'signup' %}" class="text-decoration-none text-primary fw-semibold">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* keep your previous login styles here */
+</style>
+{% endblock %}

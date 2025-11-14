@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %}Edit User | ThesisStack{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="card shadow-lg border-0 p-4 mx-auto rounded-4" style="max-width: 600px;">
+    <h3 class="fw-bold text-primary text-center mb-4">
+      Edit — {{ user_obj.get_full_name|default:user_obj.username }}
+    </h3>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Username</label>
+        {{ form.username }}
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Email</label>
+        {{ form.email }}
+      </div>
+
+      {% if student_form %}
+      <hr>
+      <h5 class="fw-bold text-secondary">Student Info</h5>
+      <div class="mb-3">
+        <label class="form-label">Reg ID</label>
+        {{ student_form.reg_id }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Batch</label>
+        {{ student_form.batch }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">CGPA</label>
+        {{ student_form.cgpa }}
+      </div>
+      {% endif %}
+
+      {% if faculty_form %}
+      <hr>
+      <h5 class="fw-bold text-secondary">Faculty Info</h5>
+      <div class="mb-3">
+        <label class="form-label">Designation</label>
+        {{ faculty_form.designation }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Department</label>
+        {{ faculty_form.department }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Seniority Rank</label>
+        {{ faculty_form.seniority_rank }}
+      </div>
+      {% endif %}
+
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary fw-semibold">Save Changes</button>
+      </div>
+    </form>
+
+    <div class="text-center mt-3">
+      <a href="{% url 'adm:admin_dashboard' %}" class="text-decoration-none">← Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

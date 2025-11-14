@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Sign Up | ThesisStack{% endblock %}
+
+{% block content %}
+<section class="position-relative">
+  <div class="floating-shape shape1"></div>
+  <div class="floating-shape shape2"></div>
+  <div class="floating-shape shape3"></div>
+
+  <div class="row justify-content-center" data-aos="fade-up">
+    <div class="col-md-7 col-lg-6">
+      <div class="card border-0 shadow-lg rounded-4 glass-card">
+        <div class="card-body p-4 text-center">
+          <h2 class="fw-bold text-primary mb-3 animate-title">Create Your ThesisStack Account</h2>
+          <img src="{% static 'img/logoo.png' %}" class="img-fluid mb-3" style="max-width:130px;">
+
+          <form method="POST" class="text-start" data-aos="fade-up" data-aos-delay="150">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">First Name</label>
+                <input type="text" name="first_name" class="form-control form-control-lg" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="last_name" class="form-control form-control-lg" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="email" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input type="text" name="username" class="form-control form-control-lg" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">User Type</label>
+              <select name="role" class="form-select form-select-lg" required>
+                <option value="">Select Type</option>
+                <option value="student">Student</option>
+                <option value="supervisor">Supervisor</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password1" class="form-control form-control-lg" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="password2" class="form-control form-control-lg" required>
+              </div>
+            </div>
+
+            {% if form.errors %}
+            <div class="alert alert-danger mt-3">{{ form.errors }}</div>
+            {% endif %}
+
+            <div class="d-grid mt-4">
+              <button type="submit" class="btn uap-btn btn-lg glow-btn">Sign Up</button>
+            </div>
+
+            <p class="text-center mt-4 mb-0">
+              Already have an account?
+              <a href="{% url 'login' %}" class="text-decoration-none text-primary fw-semibold">Login</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .glass-card {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .animate-title {
+    animation: fadeInDown 1.2s ease-in-out;
+  }
+
+  @keyframes fadeInDown {
+    from {opacity:0; transform:translateY(-25px);}
+    to {opacity:1; transform:translateY(0);}
+  }
+
+  .floating-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.2;
+    animation: float 8s ease-in-out infinite;
+    filter: blur(20px);
+    z-index: -1;
+  }
+  .shape1 { width:180px; height:180px; background:#818cf8; top:-70px; left:-70px; animation-delay:0s;}
+  .shape2 { width:130px; height:130px; background:#6366f1; bottom:-60px; right:-50px; animation-delay:3s;}
+  .shape3 { width:100px; height:100px; background:#a5b4fc; top:60%; left:75%; animation-delay:5s;}
+  @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+
+  .glow-btn:hover {
+    box-shadow: 0 0 25px rgba(99,102,241,0.6);
+    transform: translateY(-3px);
+  }
+</style>
+{% endblock %}

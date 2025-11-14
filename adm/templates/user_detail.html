@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}User Detail{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h3 class="fw-bold text-primary">{{ user_obj.get_full_name|default:user_obj.username }}</h3>
+  <p><strong>Email:</strong> {{ user_obj.email }}</p>
+  <p><strong>Role:</strong> {{ user_obj.role|capfirst }}</p>
+
+  <div class="mt-4">
+    <a href="{% url 'adm:edit_user' user_obj.id %}" class="btn btn-success">Edit Profile</a>
+    <a href="{% url 'adm:delete_user' user_obj.id %}" class="btn btn-danger">Delete User</a>
+    <a href="{% url 'adm:admin_dashboard' %}" class="btn btn-secondary">Back</a>
+  </div>
+</div>
+{% endblock %}

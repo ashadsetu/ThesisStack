@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Faculty Dashboard | ThesisStack{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+
+  <div class="d-flex flex-column align-items-center mb-4">
+    {% if faculty.image %}
+      <img src="{{ faculty.image.url }}" alt="Profile Photo"
+           class="rounded-circle shadow-sm mb-3"
+           style="width:120px; height:120px; object-fit:cover;">
+    {% else %}
+      <img src="{% static 'img/Baivab_315x315.png' %}" alt="Profile Photo"
+           class="rounded-circle shadow-sm mb-3"
+           style="width:120px; height:120px; object-fit:cover;">
+    {% endif %}
+
+    <h2 class="fw-bold text-primary mb-1">Welcome, {{ faculty.user.first_name|default:faculty.user.username }}!</h2>
+
+    <p class="text-muted mb-1">
+      <strong>Designation:</strong> {{ faculty.designation|default:"Not Set" }} |
+      <strong>Department:</strong> {{ faculty.department|default:"EEE" }}
+    </p>
+    <p class="fw-semibold text-success">Seniority Rank: {{ faculty.seniority_rank }}</p>
+  </div>
+
+  <hr class="my-4">
+
+  <h4 class="fw-bold text-primary mb-3">Assigned Thesis Groups</h4>
+  <p class="text-muted mb-4">View, manage, or remove groups under your supervision.</p>
+
+  <div class="row g-4 justify-content-center">
+    {% for group in groups %}
+      <div class="col-md-4">
+        <div class="card shadow-sm border-0 rounded-4 h-100">
+          <div class="card-body">
+            <h5 class="fw-bold text-primary">{{ group.name }}</h5>
+            <p class="small text-muted mb-1">Topic: {{ group.topic }}</p>
+            <p class="mb-1">CGPA: <strong>{{ group.group_cgpa }}</strong></p>
+            <p class="small text-muted">Members:</p>
+            <ul class="small mb-2">
+              {% for m in group.members.all %}
+                <li>{{ m.get_full_name }}</li>
+              {% endfor %}
+            </ul>
+
+            <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
+              <a href="{% url 'view_submissions' group.id %}" class="btn btn-outline-primary btn-sm">View Documents</a>
+              <a href="{% url 'group_detail' group.id %}" class="btn btn-outline-secondary btn-sm">Select</a>
+              <a href="{% url 'delete_group' group.id %}" class="btn btn-outline-danger btn-sm">Delete</a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted mt-4">No available groups right now.</p>
+    {% endfor %}
+  </div>
+
+  <div class="mt-5">
+    <a href="{% url 'faculty_logout' %}" class="btn btn-danger px-4 fw-semibold rounded-3">Logout</a>
+  </div>
+
+</div>
+
+<style>
+.hover-card {
+  transition: all 0.3s ease;
+}
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

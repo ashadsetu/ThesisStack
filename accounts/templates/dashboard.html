@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Student Dashboard | ThesisStack{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center">
+
+  <div class="d-flex flex-column align-items-center mb-4">
+    {% if user_profile and user_profile.image %}
+      <img src="{{ user_profile.image.url }}" class="rounded-circle shadow-sm mb-3"
+           style="width:120px; height:120px; object-fit:cover;">
+    {% else %}
+      <img class="rounded-circle shadow-sm mb-3"
+           style="width:120px; height:120px; object-fit:cover;">
+    {% endif %}
+    {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+    <h2 class="fw-bold text-primary mb-1">Welcome, {{ user.first_name|default:user.username }}!</h2>
+
+    {% if profile %}
+      <p class="text-muted mb-1">
+        <strong>Reg ID:</strong> {{ profile.reg_id }} |
+        <strong>Batch:</strong> {{ profile.batch }}
+      </p>
+      <p class="fs-5 fw-semibold text-success">Current CGPA: {{ profile.cgpa }}</p>
+    {% else %}
+      <p class="text-warning">Please complete your profile information.</p>
+    {% endif %}
+  </div>
+
+  <div class="row justify-content-center g-4">
+    <div class="col-md-4">
+      <div class="card border-0 shadow-lg rounded-4 h-100 text-center hover-card">
+        <div class="card-body py-4">
+          <img src="{% static 'img/group.png' %}" alt="Group" class="mb-3" style="width:80px;">
+          <h5 class="fw-bold text-primary mb-2">Create Group</h5>
+          <p class="text-muted small mb-4">Form your thesis group with up to 3 members.</p>
+          <a href="{% url 'create_group' %}" class="btn btn-outline-primary fw-semibold px-4">Create Group</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mt-5 d-flex justify-content-center gap-3 flex-wrap">
+    <a href="{% url 'profile_edit' %}" class="btn btn-outline-primary px-4 fw-semibold rounded-3">Update Profile</a>
+    <a href="{% url 'created_groups' %}" class="btn btn-outline-secondary px-4 fw-semibold rounded-3">Created Groups</a>
+    <a href="{% url 'student_logout' %}" class="btn btn-danger px-4 fw-semibold rounded-3">Logout</a>
+  </div>
+
+</div>
+
+<style>
+.hover-card {
+  transition: all 0.3s ease;
+}
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Manage Users | ThesisStack{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold text-primary mb-4 text-center">User Management Panel</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="card mb-5 border-0 shadow-sm rounded-4">
+    <div class="card-header bg-primary text-white fw-semibold">
+      Faculty Members
+    </div>
+    <div class="card-body">
+      {% if faculty %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Designation</th>
+              <th>Seniority</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for fac in faculty %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ fac.user.get_full_name }}</td>
+              <td>{{ fac.user.email }}</td>
+              <td>{{ fac.designation }}</td>
+              <td>{{ fac.seniority_rank }}</td>
+              <td>
+                <a href="{% url 'adm:delete_user' fac.user.id %}" class="btn btn-outline-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this faculty?')">
+                  Delete
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted mb-0">No faculty records found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card border-0 shadow-sm rounded-4">
+    <div class="card-header bg-success text-white fw-semibold">
+      Students
+    </div>
+    <div class="card-body">
+      {% if students %}
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Reg ID</th>
+              <th>Batch</th>
+              <th>CGPA</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for stu in students %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ stu.user.get_full_name }}</td>
+              <td>{{ stu.user.email }}</td>
+              <td>{{ stu.reg_id }}</td>
+              <td>{{ stu.batch }}</td>
+              <td>{{ stu.cgpa }}</td>
+              <td>
+                <a href="{% url 'adm:delete_user' stu.user.id %}" class="btn btn-outline-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this student?')">
+                  Delete
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted mb-0">No student records found.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .table thead th { background-color: #f8f9fa; }
+  .card { animation: fadeIn 0.4s ease-in-out; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+{% endblock %}

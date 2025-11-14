@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Create Thesis Group | ThesisStack{% endblock %}
+{% block content %}
+<div class="card border-0 shadow-lg rounded-4 mx-auto" style="max-width: 700px;">
+  <div class="card-body p-4">
+    <h3 class="fw-bold text-primary mb-3 text-center">Create Thesis Group</h3>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Group Name</label>
+        {{ form.name }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Thesis Topic</label>
+        {{ form.topic }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Select Members (Max 3)</label>
+        {{ form.members }}
+        <small class="text-muted d-block mt-1">Each student’s CGPA is shown beside their name.</small>
+      </div>
+      <div class="d-grid mt-4">
+        <button type="submit" class="btn btn-primary fw-semibold">Create Group</button>
+      </div>
+    </form>
+    <div class="text-center mt-3">
+      <a href="{% url 'student_dashboard' %}" class="text-decoration-none">← Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

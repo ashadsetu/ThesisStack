@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}View Feedback | ThesisStack{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h3 class="fw-bold text-primary mb-4 text-center">Supervisor Feedback</h3>
+  {% if status_message %}
+    {% if "accepted" in status_message %}
+      <div class="alert alert-success text-center shadow-sm"><strong>{{ status_message }}</strong></div>
+    {% elif "not accept" in status_message or "rejected" in status_message %}
+      <div class="alert alert-danger text-center shadow-sm"><strong>{{ status_message }}</strong></div>
+    {% else %}
+      <div class="alert alert-warning text-center shadow-sm"><strong>{{ status_message }}</strong></div>
+    {% endif %}
+  {% endif %}
+  {% if feedbacks %}
+    <div class="list-group mt-4">
+      {% for fb in feedbacks %}
+      <div class="list-group-item border-0 shadow-sm mb-3 rounded-3 p-4">
+        <h5 class="fw-semibold text-dark">{{ fb.thesis.title }}</h5>
+        <p class="text-muted small mb-1">Supervisor: {{ fb.supervisor.get_full_name }}</p>
+        <p class="mt-2">{{ fb.comments }}</p>
+        {% if fb.file %}
+          <a href="{{ fb.file.url }}" target="_blank" class="btn btn-sm btn-outline-primary mt-2">Download Attachment</a>
+        {% endif %}
+        <small class="text-secondary d-block mt-2">{{ fb.created_at|date:"d M, Y - h:i A" }}</small>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center mt-4 shadow-sm">No feedback available yet.</div>
+  {% endif %}
+</div>
+<style>
+.list-group-item{transition:all .2s ease;}
+.list-group-item:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.08);}
+</style>
+{% endblock %}

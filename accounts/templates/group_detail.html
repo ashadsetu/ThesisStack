@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}{{ group.name }} | ThesisStack{% endblock %}
+{% block content %}
+<h3 class="fw-bold text-primary">{{ group.name }}</h3>
+<p class="text-muted mb-1"><strong>Topic:</strong> {{ group.topic }}</p>
+<p class="mb-3"><strong>Supervisor:</strong> {{ group.supervisor|default:"—" }} |
+   <strong>External:</strong> {{ group.external|default:"—" }}</p>
+
+<div class="mb-3">
+  <strong>Group CGPA:</strong> {{ group.group_cgpa }}
+</div>
+
+<div class="mb-4">
+  <label class="form-label fw-semibold">Progress</label>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: {{ progress_pct }}%;">
+      {{ progress_pct }}%
+    </div>
+  </div>
+</div>
+
+<h5 class="mt-4">Members</h5>
+<ul class="list-group mb-4">
+  {% for m in memberships %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span>{{ m.student.user.get_full_name|default:m.student.user.username }} ({{ m.student.reg_id }})</span>
+      <span class="badge bg-secondary">{{ m.role }}</span>
+      <span class="badge {% if m.verify_state == 'ACCEPTED' %}bg-success{% elif m.verify_state == 'REJECTED' %}bg-danger{% else %}bg-warning text-dark{% endif %}">
+        {{ m.verify_state }}
+      </span>
+      {% if m.student.user == user and m.verify_state == 'PENDING' %}
+        <span>
+          <a class="btn btn-sm btn-success" href="{% url 'membership_verify' group.id 'accept' %}">Accept</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'membership_verify' group.id 'reject' %}">Reject</a>
+        </span>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+<h5>Milestones</h5>
+<ul class="list-group mb-4">
+  {% for ms in group.milestones.all %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ ms.type }}</span>
+      <span class="badge bg-info">{{ ms.state }}</span>
+    </li>
+  {% endfor %}
+</ul>
+
+
+{% endblock %}

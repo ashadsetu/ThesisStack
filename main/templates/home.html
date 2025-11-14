@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Home | ThesisStack{% endblock %}
+{% block content %}
+
+<section class="text-center py-5" data-aos="fade-up">
+  <div class="container">
+    {% if user.is_authenticated %}
+      <div class="card shadow-lg border-0 rounded-4 mx-auto mb-4" style="max-width: 750px;">
+        <div class="card-body p-4">
+          <h3 class="fw-bold text-primary mb-3">Welcome, {{ user.get_full_name|default:user.username }}!</h3>
+          {% if profile %}
+            <img src="{{ profile.image.url }}" class="rounded-circle mb-3"
+                 style="width: 120px; height: 120px; object-fit: cover;">
+            <p class="text-muted mb-1"><strong>Department:</strong> {{ profile.department|default:"N/A" }}</p>
+            <p class="text-muted mb-1"><strong>Phone:</strong> {{ profile.phone|default:"N/A" }}</p>
+          {% endif %}
+
+          {% if user.role == 'student' %}
+            {% if thesis_group %}
+              <div class="alert alert-info mt-3">
+                You are part of <strong>{{ thesis_group.name }}</strong><br>
+                Topic: {{ thesis_group.topic }}<br>
+                <strong>Group CGPA:</strong> {{ thesis_group.group_cgpa }}
+              </div>
+              {% if supervision %}
+                <div class="alert alert-success mt-3">
+                  ✅ {{ supervision.supervisor.get_full_name|default:supervision.supervisor.username }} selected your group.
+                </div>
+              {% else %}
+                <div class="alert alert-warning mt-3">Waiting for faculty selection...</div>
+              {% endif %}
+            {% else %}
+              <p class="text-muted">No thesis group yet. <a href="{% url 'create_group' %}">Create one now</a>.</p>
+            {% endif %}
+          {% elif user.role == 'supervisor' %}
+            {% if faculty %}
+              <p class="text-muted mb-0"><strong>Designation:</strong> {{ faculty.designation }}</p>
+              <p class="text-muted mb-3"><strong>Seniority Rank:</strong> {{ faculty.seniority_rank }}</p>
+            {% endif %}
+          {% endif %}
+
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            {% if user.role == 'student' %}
+              <a href="{% url 'student_dashboard' %}" class="btn uap-btn">Go to Dashboard</a>
+            {% elif user.role == 'supervisor' %}
+              <a href="{% url 'faculty_dashboard' %}" class="btn uap-btn">Go to Dashboard</a>
+            {% elif user.role == 'admin' %}
+              <a href="{% url 'adm:admin_dashboard' %}" class="btn uap-btn">Go to Admin Panel</a>
+            {% endif %}
+            <a href="{% url 'profiles:view_profile' %}" class="btn btn-outline-primary">View Profile</a>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <h1 class="fw-bold text-primary mb-3">Welcome to ThesisStack</h1>
+      <p class="text-muted mb-4">A smart platform to manage, upload, and review university theses efficiently.</p>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="{% url 'signup' %}" class="btn uap-btn btn-lg">Sign Up</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg">Login</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

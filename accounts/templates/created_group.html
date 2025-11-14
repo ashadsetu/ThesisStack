@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Created Groups | ThesisStack{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold text-primary text-center mb-4">Your Created Thesis Groups</h2>
+
+  {% if group_data %}
+    <div class="row g-4 justify-content-center">
+      {% for item in group_data %}
+        <div class="col-md-6 col-lg-5">
+          <div class="card shadow-lg border-0 rounded-4 h-100">
+            <div class="card-body">
+              <h5 class="fw-bold text-primary mb-1">{{ item.group.name }}</h5>
+              <p class="text-muted small mb-2"><strong>Topic:</strong> {{ item.group.topic }}</p>
+              <p class="text-muted small mb-1"><strong>Created:</strong> {{ item.group.created_at|date:"d M, Y" }}</p>
+              <p class="text-muted small mb-3"><strong>Members:</strong>
+                {% for m in item.members %}
+                  {{ m.get_full_name|default:m.username }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </p>
+
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <span class="text-primary fw-semibold small">Progress</span>
+                  <span class="fw-semibold small">{{ item.progress }}%</span>
+                </div>
+                <div class="progress" style="height:20px;">
+                  <div class="progress-bar {% if item.progress < 40 %}bg-danger{% elif item.progress < 80 %}bg-warning{% else %}bg-success{% endif %}"
+                       role="progressbar" style="width: {{ item.progress }}%">
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center">
+
+                <a href="{% url 'upload_thesis' %}" class="btn btn-outline-success btn-sm me-2">Upload</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info text-center">You haven’t created any thesis groups yet.</div>
+  {% endif %}
+</div>
+
+<style>
+.progress-bar {
+  transition: width 0.4s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  transition: all 0.3s ease;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ user_type }} List{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h3 class="fw-bold text-primary mb-4">{{ user_type }} List</h3>
+  {% if users %}
+  <table class="table table-bordered table-striped shadow-sm">
+    <thead class="table-primary">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.user.get_full_name|default:u.user.username }}</td>
+        <td>{{ u.user.email }}</td>
+        <td>
+          <a href="{% url 'adm:user_detail' u.user.id %}" class="btn btn-sm btn-outline-info">View</a>
+          <a href="{% url 'adm:edit_user' u.user.id %}" class="btn btn-sm btn-outline-success">Edit</a>
+          <a href="{% url 'adm:delete_user' u.user.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="alert alert-info">No {{ user_type|lower }} found.</div>
+  {% endif %}
+</div>
+{% endblock %}

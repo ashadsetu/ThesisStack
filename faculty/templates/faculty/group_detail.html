@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Group Details | ThesisStack{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h3 class="fw-bold text-primary">{{ group.name }}</h3>
+  <p><strong>Topic:</strong> {{ group.topic }}</p>
+
+  <h5 class="mt-4">Members:</h5>
+  <div class="row">
+    {% for member in group.members.all %}
+      <div class="col-md-6 mb-3">
+        <div class="card shadow-sm border-0 rounded-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-primary mb-1">{{ member.get_full_name }}</h6>
+            <p class="small text-muted mb-1">Email: {{ member.email }}</p>
+
+            {% if member.studentprofile %}
+              {% with profile=member.studentprofile %}
+                <p class="small mb-0"><strong>Reg ID:</strong> {{ profile.reg_id }}</p>
+                <p class="small mb-0"><strong>Batch:</strong> {{ profile.batch }}</p>
+                <p class="small mb-0"><strong>CGPA:</strong> {{ profile.cgpa }}</p>
+                <p class="small mb-0"><strong>Phone:</strong> {{ profile.phone }}</p>
+              {% endwith %}
+            {% else %}
+              <p class="text-muted small">No student profile available.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No members found for this group.</p>
+    {% endfor %}
+  </div>
+
+  <a href="{% url 'faculty_dashboard' %}" class="btn btn-outline-primary mt-4">← Back to Dashboard</a>
+</div>
+{% endblock %}
