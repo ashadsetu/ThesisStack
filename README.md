@@ -1,3 +1,5 @@
-🎓 **ThesisStack**
-ThesisStack is an integrated university thesis management platform built on the Django web framework. It is designed to streamline and digitize every stage of the thesis lifecycle—from group formation and topic selection to proposal submission, supervision, and final evaluation. The system centralizes all research-related processes, providing a seamless and efficient workflow for students, supervisors, and administrators.
+🎓 ThesisStack
 
+ThesisStack is a comprehensive university thesis management system built with the Django web framework. It streamlines and digitizes the entire thesis process — from group creation and topic selection to proposal submission, supervision, and final evaluation.
+
+Designed for students, supervisors, and administrators, ThesisStack centralizes research management to provide a seamless and efficient workflow for all stakeholders.
